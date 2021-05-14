@@ -22,6 +22,18 @@
 		"ProfiseeRest_properties_typeProperties_url": {
 			"type": "string",
 			"defaultValue": "https://profiseepreview.eastus.cloudapp.azure.com/Profisee/rest/v1"
+		},
+		"NewCsvFile_properties_Copy from CSV to Profisee REST API_parameters_FileName": {
+			"type": "string",
+			"defaultValue": "@triggerBody().fileName"
+		},
+		"NewCsvFile_properties_Copy from CSV to Profisee REST API_parameters_FileFolder": {
+			"type": "string",
+			"defaultValue": "@triggerBody().folderPath"
+		},
+		"NewCsvFile_properties_typeProperties_scope": {
+			"type": "string",
+			"defaultValue": "/subscriptions/73814551-37dd-4143-a149-df9c2a2c97b6/resourceGroups/BeSpokedBikes/providers/Microsoft.Storage/storageAccounts/bespokedbikesstorage"
 		}
 	},
 	"variables": {
@@ -242,12 +254,10 @@
 				],
 				"parameters": {
 					"FileName": {
-						"type": "string",
-						"defaultValue": "Mountaventure.csv"
+						"type": "string"
 					},
 					"FileFolder": {
-						"type": "string",
-						"defaultValue": "profisee-input/product"
+						"type": "string"
 					}
 				},
 				"folder": {
@@ -259,6 +269,40 @@
 			"dependsOn": [
 				"[concat(variables('factoryId'), '/datasets/AdlsGen2BlobCsv')]",
 				"[concat(variables('factoryId'), '/datasets/ProfiseeRESTAPI_Records_Upsert')]"
+			]
+		},
+		{
+			"name": "[concat(parameters('factoryName'), '/NewCsvFile')]",
+			"type": "Microsoft.DataFactory/factories/triggers",
+			"apiVersion": "2018-06-01",
+			"properties": {
+				"annotations": [],
+				"runtimeState": "Started",
+				"pipelines": [
+					{
+						"pipelineReference": {
+							"referenceName": "Copy from CSV to Profisee REST API",
+							"type": "PipelineReference"
+						},
+						"parameters": {
+							"FileName": "[parameters('NewCsvFile_properties_Copy from CSV to Profisee REST API_parameters_FileName')]",
+							"FileFolder": "[parameters('NewCsvFile_properties_Copy from CSV to Profisee REST API_parameters_FileFolder')]"
+						}
+					}
+				],
+				"type": "BlobEventsTrigger",
+				"typeProperties": {
+					"blobPathBeginsWith": "/profisee-input/blobs/",
+					"blobPathEndsWith": ".csv",
+					"ignoreEmptyBlobs": true,
+					"scope": "[parameters('NewCsvFile_properties_typeProperties_scope')]",
+					"events": [
+						"Microsoft.Storage.BlobCreated"
+					]
+				}
+			},
+			"dependsOn": [
+				"[concat(variables('factoryId'), '/pipelines/Copy from CSV to Profisee REST API')]"
 			]
 		}
 	]

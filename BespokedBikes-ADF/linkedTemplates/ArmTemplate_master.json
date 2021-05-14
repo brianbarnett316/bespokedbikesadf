@@ -23,6 +23,18 @@
 			"type": "string",
 			"defaultValue": "https://profiseepreview.eastus.cloudapp.azure.com/Profisee/rest/v1"
 		},
+		"NewCsvFile_properties_Copy from CSV to Profisee REST API_parameters_FileName": {
+			"type": "string",
+			"defaultValue": "@triggerBody().fileName"
+		},
+		"NewCsvFile_properties_Copy from CSV to Profisee REST API_parameters_FileFolder": {
+			"type": "string",
+			"defaultValue": "@triggerBody().folderPath"
+		},
+		"NewCsvFile_properties_typeProperties_scope": {
+			"type": "string",
+			"defaultValue": "/subscriptions/73814551-37dd-4143-a149-df9c2a2c97b6/resourceGroups/BeSpokedBikes/providers/Microsoft.Storage/storageAccounts/bespokedbikesstorage"
+		},
 		"containerUri": {
 			"type": "string",
 			"metadata": "URI to storage account containing linked ARM templates"
@@ -61,6 +73,15 @@
 					},
 					"ProfiseeRest_properties_typeProperties_url": {
 						"value": "[parameters('ProfiseeRest_properties_typeProperties_url')]"
+					},
+					"NewCsvFile_properties_Copy from CSV to Profisee REST API_parameters_FileName": {
+						"value": "[parameters('NewCsvFile_properties_Copy from CSV to Profisee REST API_parameters_FileName')]"
+					},
+					"NewCsvFile_properties_Copy from CSV to Profisee REST API_parameters_FileFolder": {
+						"value": "[parameters('NewCsvFile_properties_Copy from CSV to Profisee REST API_parameters_FileFolder')]"
+					},
+					"NewCsvFile_properties_typeProperties_scope": {
+						"value": "[parameters('NewCsvFile_properties_typeProperties_scope')]"
 					}
 				}
 			},
