@@ -77,12 +77,10 @@
 		],
 		"parameters": {
 			"FileName": {
-				"type": "string",
-				"defaultValue": "Mountaventure.csv"
+				"type": "string"
 			},
 			"FileFolder": {
-				"type": "string",
-				"defaultValue": "profisee-input/product"
+				"type": "string"
 			}
 		},
 		"folder": {
